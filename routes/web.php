@@ -36,3 +36,28 @@ Route::get('/hello-again', function () {
 Route::get('/hello-world', function () {
     return view('hello.world',['name'=> "Eko"]);
 });
+
+Route::get('/product/{id}', function ($productId) {
+    return "Product $productId";
+});
+
+Route::get('/product/{id}/items/{item}', function ($productId,$itemId) {
+    return "Product $productId Item $itemId";
+});
+
+Route::get("/categories/{id}",function($id){
+    return "Category $id";
+})->where('id',"[0-9]+"); //withRegex
+
+Route::get("users/{id?}",function($id="404"){
+    return "User $id";
+});
+
+//konflik akan di prioritaskan yang atas
+Route::get("/conflict/eko",function(){
+    return "User Eko";
+});
+
+Route::get("/conflict/{name}",function($name){
+    return "User $name";
+});
