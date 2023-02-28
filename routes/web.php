@@ -26,3 +26,13 @@ Route::redirect("/yt","/pzn");
 Route::fallback(function(){
     return "404";
 });
+
+Route::view("/hello","hello",['name'=>"Yaqin"]);
+
+Route::get('/hello-again', function () {
+    return view('hello',['name'=> "Eko"]);
+});
+
+Route::get('/hello-world', function () {
+    return view('hello.world',['name'=> "Eko"]);
+});
