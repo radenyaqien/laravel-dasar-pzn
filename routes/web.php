@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CookiesController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\FormController;
 use App\Http\Controllers\HelloController;
 use App\Http\Controllers\InputController;
 use App\Http\Controllers\RedirectController;
@@ -120,3 +121,6 @@ Route::get('/middleware/api', function () {
 Route::get('/middleware/group', function () {
     return "group";
 })->middleware(['pzn']);
+
+Route::get('/form', [FormController::class, "form"]);
+Route::post('/form', [FormController::class, "submitForm"]);
