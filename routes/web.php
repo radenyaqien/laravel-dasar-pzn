@@ -98,21 +98,32 @@ Route::post("/input/filter/merge", [InputController::class, "filterMerge"]);
 
 Route::post("/file/upload", [FileController::class, "upload"])->withoutMiddleware([VerifyCsrfToken::class]);
 Route::post("/file/uploadlocal", [FileController::class, "uploadlocal"]);
-
 Route::get("/response/hello", [ResponseController::class, "response"]);
 Route::get("/response/header", [ResponseController::class, "header"]);
-Route::get("/response/type/view", [ResponseController::class, "responseView"]);
-Route::get("/response/type/json", [ResponseController::class, "responseJson"]);
-Route::get("/response/type/file", [ResponseController::class, "responseFile"]);
-Route::get("/response/type/download", [ResponseController::class, "responseDownload"]);
-Route::get("/cookie/set", [CookiesController::class, "createCookies"]);
-Route::get("/cookie/get", [CookiesController::class, "getCookie"]);
-Route::get("/cookie/clear", [CookiesController::class, "clearCookie"]);
-Route::get("/redirect/from", [RedirectController::class, "redirectFrom"]);
-Route::get("/redirect/from", [RedirectController::class, "redirectFrom"]);
-Route::get("/redirect/name", [RedirectController::class, "redirectName"]);
-Route::get("/redirect/name/{name}", [RedirectController::class, "redirectHello"])->name("redirect-hello");
-Route::get("/redirect/away", [RedirectController::class, "redirectAway"]);
+
+Route::prefix("/response/type")->group(function () {
+    Route::get("/view", [ResponseController::class, "responseView"]);
+    Route::get("/json", [ResponseController::class, "responseJson"]);
+    Route::get("/file", [ResponseController::class, "responseFile"]);
+    Route::get("/download", [ResponseController::class, "responseDownload"]);
+});
+
+Route::prefix("/cookie")->group(function () {
+    Route::get("/set", [CookiesController::class, "createCookies"]);
+    Route::get("/get", [CookiesController::class, "getCookie"]);
+    Route::get("/clear", [CookiesController::class, "clearCookie"]);
+});
+
+
+Route::prefix("/redirect")->group(function () {
+    Route::get("/from", [RedirectController::class, "redirectFrom"]);
+    Route::get("/name", [RedirectController::class, "redirectName"]);
+    Route::get("/name/{name}", [RedirectController::class, "redirectHello"])->name("redirect-hello");
+    Route::get("/away", [RedirectController::class, "redirectAway"]);
+});
+
+
+
 
 Route::get('/middleware/api', function () {
     return "api";
