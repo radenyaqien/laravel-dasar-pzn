@@ -6,6 +6,7 @@ use App\Http\Controllers\HelloController;
 use App\Http\Controllers\InputController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\ResponseController;
+use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -94,7 +95,7 @@ Route::post("/input/filter/only", [InputController::class, "filterOnly"]);
 Route::post("/input/filter/except", [InputController::class, "filterExcept"]);
 Route::post("/input/filter/merge", [InputController::class, "filterMerge"]);
 
-Route::post("/file/upload", [FileController::class, "upload"]);
+Route::post("/file/upload", [FileController::class, "upload"])->withoutMiddleware([VerifyCsrfToken::class]);
 Route::post("/file/uploadlocal", [FileController::class, "uploadlocal"]);
 
 Route::get("/response/hello", [ResponseController::class, "response"]);
@@ -119,4 +120,3 @@ Route::get('/middleware/api', function () {
 Route::get('/middleware/group', function () {
     return "group";
 })->middleware(['pzn']);
-
