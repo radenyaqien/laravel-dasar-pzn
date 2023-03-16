@@ -108,10 +108,10 @@ Route::prefix("/response/type")->group(function () {
     Route::get("/download", [ResponseController::class, "responseDownload"]);
 });
 
-Route::prefix("/cookie")->group(function () {
-    Route::get("/set", [CookiesController::class, "createCookies"]);
-    Route::get("/get", [CookiesController::class, "getCookie"]);
-    Route::get("/clear", [CookiesController::class, "clearCookie"]);
+Route::controller(CookiesController::class)->prefix("/cookie")->group(function () {
+    Route::get("/set", "createCookies");
+    Route::get("/get", "getCookie");
+    Route::get("/clear", "clearCookie");
 });
 
 
@@ -122,16 +122,18 @@ Route::prefix("/redirect")->group(function () {
     Route::get("/away", [RedirectController::class, "redirectAway"]);
 });
 
+Route::middleware("contoh:PZN,401")->group(function () {
+
+    Route::get('/middleware/api', function () {
+        return "api";
+    });
+
+    Route::get('/middleware/group', function () {
+        return "group";
+    });
+});
 
 
-
-Route::get('/middleware/api', function () {
-    return "api";
-})->middleware(['contoh:PZN,401']);
-
-Route::get('/middleware/group', function () {
-    return "group";
-})->middleware(['pzn']);
 
 Route::get('/form', [FormController::class, "form"]);
 Route::post('/form', [FormController::class, "submitForm"]);
