@@ -114,7 +114,7 @@ Route::get("/redirect/away", [RedirectController::class, "redirectAway"]);
 
 Route::get('/middleware/api', function () {
     return "api";
-})->middleware('contoh');
+})->middleware(['contoh:PZN,401']);
 
 Route::get('/middleware/group', function () {
     return "group";
