@@ -25,7 +25,82 @@ use Illuminate\Support\Facades\URL;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home', [
+        "title" => "Home"
+    ]);
+});
+Route::get('/about', function () {
+    return view('about', [
+        "title" => "About",
+        "name" => "Muhammad Ainul Yaqin",
+        "email" => "Myaqien27@gmail.com",
+        "image" => "sendakep.jpeg"
+    ]);
+});
+
+
+Route::get('/blog', function () {
+
+    $blog_posts = [
+        [
+            "title" => "Judul Post Pertama",
+            "slug" => "judul-post-pertama",
+            "author" => "radenyaqine",
+            "body" => "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dignissimos facilis magni harum recusandae quo hic, quia at nisi! Molestiae minus iure accusamus dignissimos repellat in saepe quidem explicabo quam laudantium?"
+        ],
+        [
+            "title" => "Judul Post kedua",
+            "slug" => "judul-post-kedua",
+            "author" => "radenyaqine",
+            "body" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus exercitationem quisquam officiis, fugit nemo ea aperiam dolore ratione eveniet quis facere aliquam delectus voluptatem maiores iusto, optio quae, odit porro? Dolor maiores repellat dicta temporibus deserunt est nobis omnis laudantium id voluptatem numquam sed vero, iste cumque suscipit ipsam. Et, aliquam! Nemo reiciendis, ad quos consectetur expedita explicabo incidunt molestiae tenetur asperiores placeat quibusdam minima fuga non repudiandae debitis quisquam aspernatur quas, distinctio nisi a numquam inventore? Error, quos. Quas fugit suscipit non, hic, soluta esse voluptatibus molestias tenetur tempore, voluptatem iure animi? Quod iusto voluptatibus quia. Aliquam, magnam! Voluptatibus?"
+        ],
+        [
+            "title" => "Judul Post Ketiga",
+            "slug" => "judul-post-ketiga",
+            "author" => "radenyaqine",
+            "body" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex dolorum, consectetur animi rem, atque eum quos accusamus error delectus ullam pariatur, quidem aliquid minima veniam nesciunt excepturi saepe eveniet tenetur! Consectetur alias repellendus perspiciatis! Quisquam, quas quae? Odio dicta atque, ea itaque ab debitis animi adipisci nisi ullam quidem deserunt voluptatem amet veniam natus unde repellendus. Possimus necessitatibus molestias ipsa eveniet commodi nam dolorum ducimus consequatur, totam, nobis ullam tempore tenetur incidunt sit rerum, veritatis id eos pariatur. Facilis, inventore."
+        ]
+    ];
+
+    return view('blog', [
+        "title" => "Blog",
+        "posts" => $blog_posts
+    ]);
+});
+
+Route::get("/posts/{slug}", function ($slug) {
+    $blog_posts = [
+        [
+            "title" => "Judul Post Pertama",
+            "slug" => "judul-post-pertama",
+            "author" => "radenyaqine",
+            "body" => "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dignissimos facilis magni harum recusandae quo hic, quia at nisi! Molestiae minus iure accusamus dignissimos repellat in saepe quidem explicabo quam laudantium?"
+        ],
+        [
+            "title" => "Judul Post kedua",
+            "slug" => "judul-post-kedua",
+            "author" => "radenyaqine",
+            "body" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus exercitationem quisquam officiis, fugit nemo ea aperiam dolore ratione eveniet quis facere aliquam delectus voluptatem maiores iusto, optio quae, odit porro? Dolor maiores repellat dicta temporibus deserunt est nobis omnis laudantium id voluptatem numquam sed vero, iste cumque suscipit ipsam. Et, aliquam! Nemo reiciendis, ad quos consectetur expedita explicabo incidunt molestiae tenetur asperiores placeat quibusdam minima fuga non repudiandae debitis quisquam aspernatur quas, distinctio nisi a numquam inventore? Error, quos. Quas fugit suscipit non, hic, soluta esse voluptatibus molestias tenetur tempore, voluptatem iure animi? Quod iusto voluptatibus quia. Aliquam, magnam! Voluptatibus?"
+        ],
+        [
+            "title" => "Judul Post Ketiga",
+            "slug" => "judul-post-ketiga",
+            "author" => "radenyaqine",
+            "body" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex dolorum, consectetur animi rem, atque eum quos accusamus error delectus ullam pariatur, quidem aliquid minima veniam nesciunt excepturi saepe eveniet tenetur! Consectetur alias repellendus perspiciatis! Quisquam, quas quae? Odio dicta atque, ea itaque ab debitis animi adipisci nisi ullam quidem deserunt voluptatem amet veniam natus unde repellendus. Possimus necessitatibus molestias ipsa eveniet commodi nam dolorum ducimus consequatur, totam, nobis ullam tempore tenetur incidunt sit rerum, veritatis id eos pariatur. Facilis, inventore."
+        ]
+    ];
+
+    $postSelected = [];
+    foreach ($blog_posts as $post) {
+        if ($post['slug'] === $slug) {
+            $postSelected = $post;
+        }
+    }
+
+    return view('post', [
+        "title" => "Single Post",
+        "post" => $postSelected
+    ]);
 });
 
 Route::get("/pzn", function () {
@@ -162,7 +237,7 @@ Route::get("/error/sample", function () {
 });
 
 Route::get("/error/manual", function () {
-    report( new Exception("Sample Error"));
+    report(new Exception("Sample Error"));
 });
 
 
@@ -171,11 +246,11 @@ Route::get("/error/validation", function () {
 });
 
 Route::get("/abort/400", function () {
-    abort(400," ups not valid");
+    abort(400, " ups not valid");
 });
 Route::get("/abort/401", function () {
-  abort(401);
+    abort(401);
 });
 Route::get("/abort/500", function () {
- abort(500);
+    abort(500);
 });
