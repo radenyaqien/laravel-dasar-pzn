@@ -2,14 +2,11 @@
 @section('container')
     <article class="mb-5">
         <h2>
-            {{ $post['title'] }}
+            {{ $post->title }}
         </h2>
-        <h5>
-            {{ $post['author'] }}
-        </h5>
-        <p>
-            {{ $post['body'] }}
-        </p>
+        <p>Category : <a href="/categories/{{ $post->category->name }}">{{ $post->category->name }}</a></p>
+        {!! $post->body !!}
+
     </article>
     <a href="/blog">Back To Blog</a>
 @endsection

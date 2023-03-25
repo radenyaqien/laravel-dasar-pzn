@@ -5,11 +5,14 @@ use App\Http\Controllers\CookiesController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\HelloController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\InputController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\SessionContoller;
 use App\Http\Middleware\VerifyCsrfToken;
+use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 
@@ -39,70 +42,25 @@ Route::get('/about', function () {
 });
 
 
-Route::get('/blog', function () {
+Route::get('/blog', [PostController::class, 'index']);
 
-    $blog_posts = [
-        [
-            "title" => "Judul Post Pertama",
-            "slug" => "judul-post-pertama",
-            "author" => "radenyaqine",
-            "body" => "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dignissimos facilis magni harum recusandae quo hic, quia at nisi! Molestiae minus iure accusamus dignissimos repellat in saepe quidem explicabo quam laudantium?"
-        ],
-        [
-            "title" => "Judul Post kedua",
-            "slug" => "judul-post-kedua",
-            "author" => "radenyaqine",
-            "body" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus exercitationem quisquam officiis, fugit nemo ea aperiam dolore ratione eveniet quis facere aliquam delectus voluptatem maiores iusto, optio quae, odit porro? Dolor maiores repellat dicta temporibus deserunt est nobis omnis laudantium id voluptatem numquam sed vero, iste cumque suscipit ipsam. Et, aliquam! Nemo reiciendis, ad quos consectetur expedita explicabo incidunt molestiae tenetur asperiores placeat quibusdam minima fuga non repudiandae debitis quisquam aspernatur quas, distinctio nisi a numquam inventore? Error, quos. Quas fugit suscipit non, hic, soluta esse voluptatibus molestias tenetur tempore, voluptatem iure animi? Quod iusto voluptatibus quia. Aliquam, magnam! Voluptatibus?"
-        ],
-        [
-            "title" => "Judul Post Ketiga",
-            "slug" => "judul-post-ketiga",
-            "author" => "radenyaqine",
-            "body" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex dolorum, consectetur animi rem, atque eum quos accusamus error delectus ullam pariatur, quidem aliquid minima veniam nesciunt excepturi saepe eveniet tenetur! Consectetur alias repellendus perspiciatis! Quisquam, quas quae? Odio dicta atque, ea itaque ab debitis animi adipisci nisi ullam quidem deserunt voluptatem amet veniam natus unde repellendus. Possimus necessitatibus molestias ipsa eveniet commodi nam dolorum ducimus consequatur, totam, nobis ullam tempore tenetur incidunt sit rerum, veritatis id eos pariatur. Facilis, inventore."
-        ]
-    ];
-
-    return view('blog', [
-        "title" => "Blog",
-        "posts" => $blog_posts
+Route::get("/posts/{post:slug}", [PostController::class, 'show']);
+Route::get("/categories", function(Category $category){
+    return view('categories',[
+        "title" => "Post Categories",
+        "categories"=> Category::all()
+    ]);
+});
+Route::get("/categories/{category:slug}", function(Category $category){
+    return view('category',[
+        "title" => $category->name,
+        "posts"=> $category->posts,
+        "category" => $category->name,
     ]);
 });
 
-Route::get("/posts/{slug}", function ($slug) {
-    $blog_posts = [
-        [
-            "title" => "Judul Post Pertama",
-            "slug" => "judul-post-pertama",
-            "author" => "radenyaqine",
-            "body" => "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dignissimos facilis magni harum recusandae quo hic, quia at nisi! Molestiae minus iure accusamus dignissimos repellat in saepe quidem explicabo quam laudantium?"
-        ],
-        [
-            "title" => "Judul Post kedua",
-            "slug" => "judul-post-kedua",
-            "author" => "radenyaqine",
-            "body" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus exercitationem quisquam officiis, fugit nemo ea aperiam dolore ratione eveniet quis facere aliquam delectus voluptatem maiores iusto, optio quae, odit porro? Dolor maiores repellat dicta temporibus deserunt est nobis omnis laudantium id voluptatem numquam sed vero, iste cumque suscipit ipsam. Et, aliquam! Nemo reiciendis, ad quos consectetur expedita explicabo incidunt molestiae tenetur asperiores placeat quibusdam minima fuga non repudiandae debitis quisquam aspernatur quas, distinctio nisi a numquam inventore? Error, quos. Quas fugit suscipit non, hic, soluta esse voluptatibus molestias tenetur tempore, voluptatem iure animi? Quod iusto voluptatibus quia. Aliquam, magnam! Voluptatibus?"
-        ],
-        [
-            "title" => "Judul Post Ketiga",
-            "slug" => "judul-post-ketiga",
-            "author" => "radenyaqine",
-            "body" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex dolorum, consectetur animi rem, atque eum quos accusamus error delectus ullam pariatur, quidem aliquid minima veniam nesciunt excepturi saepe eveniet tenetur! Consectetur alias repellendus perspiciatis! Quisquam, quas quae? Odio dicta atque, ea itaque ab debitis animi adipisci nisi ullam quidem deserunt voluptatem amet veniam natus unde repellendus. Possimus necessitatibus molestias ipsa eveniet commodi nam dolorum ducimus consequatur, totam, nobis ullam tempore tenetur incidunt sit rerum, veritatis id eos pariatur. Facilis, inventore."
-        ]
-    ];
 
-    $postSelected = [];
-    foreach ($blog_posts as $post) {
-        if ($post['slug'] === $slug) {
-            $postSelected = $post;
-        }
-    }
-
-    return view('post', [
-        "title" => "Single Post",
-        "post" => $postSelected
-    ]);
-});
-
+//Programmer Zaman Now
 Route::get("/pzn", function () {
     return "warjoe";
 });
