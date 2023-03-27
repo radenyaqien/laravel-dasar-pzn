@@ -55,21 +55,7 @@ Route::get("/categories", function (Category $category) {
         "categories" => Category::all()
     ]);
 });
-Route::get("/categories/{category:slug}", function (Category $category) {
-    return view('blog', [
-        "title" => "Post By Category : $category->name",
-        "active" => "categories",
-        "posts" => $category->posts->load('category','author'),
-        "category" => $category->name,
-    ]);
-});
-Route::get("/authors/{author:username}", function (User $author) {
-    return view('blog', [
-        "title" => "Post By Author : $author->name",
-        "posts" => $author->posts->load('category','author'),
 
-    ]);
-});
 
 
 //Programmer Zaman Now
