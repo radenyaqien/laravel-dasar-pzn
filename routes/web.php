@@ -1,21 +1,21 @@
 <?php
 
+use App\Models\Category;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Route;
 use App\Exceptions\ValidationException;
-use App\Http\Controllers\CookiesController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\FormController;
-use App\Http\Controllers\HelloController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\InputController;
-use App\Http\Controllers\RedirectController;
-use App\Http\Controllers\ResponseController;
-use App\Http\Controllers\SessionContoller;
 use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\Category;
-use App\Models\Post;
-use App\Models\User;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\URL;
+use App\Http\Controllers\HelloController;
+use App\Http\Controllers\InputController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SessionContoller;
+use App\Http\Controllers\CookiesController;
+use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ResponseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +56,8 @@ Route::get("/categories", function (Category $category) {
     ]);
 });
 
+Route::get('/login', [LoginController::class, 'index']);
+Route::get('/register', [RegisterController::class, 'index']);
 
 
 //Programmer Zaman Now
