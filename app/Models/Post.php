@@ -2,19 +2,30 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Cviebrock\EloquentSluggable\Sluggable;
+
 
 class Post extends Model
 {
+    use Sluggable;
     use HasFactory;
 
-    // protected $fillable = [
-    //     'title','excerpt','body'
-    // ];
-    //or
+
     protected $guarded = ['id'];
     protected $with = ['category', 'author'];
+
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
 
     public function scopeFilter($query, array $filters)
     {
@@ -22,7 +33,7 @@ class Post extends Model
         $query->when(
             $filters['search'] ?? false,
             fn ($query, $search) => $query->where('title', 'like', '%' . $search . '%')
-                                        ->orWhere('body', 'like', '%' . $search . '%')
+                ->orWhere('body', 'like', '%' . $search . '%')
         );
 
         $query->when(
