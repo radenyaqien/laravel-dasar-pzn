@@ -8,9 +8,9 @@
             <form action="/blog" method="get">
                 <div class="input-group mb-3">
                     <input type="hidden" name="category" value="{{ request('category') }}">
-                    <input type="hidden" name="author" value="{{ request('author') }}">  
-                    <input type="text" name="search" class="form-control" placeholder="Search..." aria-label="Search...."
-                        aria-describedby="basic-addon2" value="{{ request('search') }}">
+                    <input type="hidden" name="author" value="{{ request('author') }}">
+                    <input type="text" name="search" class="form-control" placeholder="Search..."
+                        aria-label="Search...." aria-describedby="basic-addon2" value="{{ request('search') }}">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit">Search</button>
                     </div>
@@ -21,8 +21,18 @@
 
     @if ($posts->count())
         <div class="card mb-3">
+
+            @if ($posts->first()->image)
+                <div style="max-height: 350px;overflow: hidden">
+                    <img src="{{ asset('storage/post-img/' . $posts->first()->image) }}" alt="{{ $posts->first()->category->name }}"
+                        class="img-fluid">
+                </div>
+            @else
+              
             <img src="https://source.unsplash.com/1200x400?{{ $posts->first()->category->name }}" class="card-img-top"
-                alt="{{ $posts->first()->category->name }}">
+            alt="{{ $posts->first()->category->name }}">
+            @endif
+
             <div class="card-body text-center">
                 <h3 class="card-title"><a class="text-decoration-none text-dark"
                         href="/posts/{{ $posts->first()->slug }}">{{ $posts->first()->title }}
@@ -50,6 +60,17 @@
                                     class="text-white text-decoration-none"
                                     href="/blog?category={{ $post->category->slug }}">{{ $post->category->name }}</a>
                             </div>
+
+                            @if ($post->image)
+                                <div style="max-height: 350px;overflow: hidden">
+                                    <img src="{{ asset('storage/post-img/' . $post->image) }}"
+                                        alt="{{ $post->category->name }}" class="img-fluid">
+                                </div>
+                            @else
+                                <img src="https://source.unsplash.com/1200x400?{{ $post->category->name }}"
+                                    alt="{{ $post->category->name }}" class="img-fluid">
+                            @endif
+
                             <img src="https://source.unsplash.com/500x400?{{ $post->category->name }}" class="card-img-top"
                                 alt="{{ $post->category->name }}">
                             <div class="card-body">

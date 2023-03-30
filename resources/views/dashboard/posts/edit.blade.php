@@ -6,7 +6,7 @@
     </div>
 
     <div class="col-lg-8">
-        <form method="POST" action="/dashboard/posts/{{ $post->slug }}" class="mb-5">
+        <form method="POST" action="/dashboard/posts/{{ $post->slug }}" class="mb-5" enctype="multipart/form-data">
             @csrf
             @method('put')
             <div class="mb-3">
@@ -15,7 +15,7 @@
                     class="form-control @error('title')
                     is-invalid
                 @enderror"
-                    id="title" value="{{ old('title',$post->title) }}" autofocus name="title">
+                    id="title" value="{{ old('title', $post->title) }}" autofocus name="title">
                 @error('title')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -25,7 +25,8 @@
             <div class="mb-3">
                 <label for="slug" name="slug" class="form-label">Slug</label>
                 <input type="text" class="form-control @error('slug')
-                is-invalid @enderror" id="slug" name="slug" value="{{ old('slug',$post->slug) }}">
+                is-invalid @enderror"
+                    id="slug" name="slug" value="{{ old('slug', $post->slug) }}">
                 @error('slug')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -36,7 +37,7 @@
                 <label for="category" class="form-label">Category</label>
                 <select class="form-select" name="category_id">
                     @foreach ($categories as $category)
-                        @if (old('category_id',$post->category_id) == $category->id)
+                        @if (old('category_id', $post->category_id) == $category->id)
                             <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
                         @else
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -44,11 +45,28 @@
                     @endforeach
                 </select>
             </div>
-            
+            <div class="mb-3">
+                <label for="image" class="form-label">Image</label>
+                @if ($post->image)
+                    <img src="{{ asset('storage/post-img/' . $post->image) }}"
+                        class="img-preview col-sm-5 img-fluid mb-3 d-block">
+                @else
+                    <img class="img-preview col-sm-5 img-fluid mb-3">
+                @endif
+
+                <input class="form-control @error('image') is-invalid @enderror" type="file" id="image"
+                    name="image" onchange="previewImage()">
+
+                @error('image')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
             <div class="mb-3">
                 <label for="body" class="form-label">Body</label>
 
-                <input value="{{ old('body',$post->body) }}" id="body" type="hidden" name="body">
+                <input value="{{ old('body', $post->body) }}" id="body" type="hidden" name="body">
                 <trix-editor input="body"></trix-editor>
                 @error('body')
                     <p class="text-danger">
@@ -74,5 +92,16 @@
         document.addEventListener('trix-file-accept', function(e) {
             e.preventDefault()
         })
+
+        function previewImage() {
+
+            const image = document.querySelector("#image")
+            const imgPreview = document.querySelector(".img-preview")
+
+            imgPreview.style.display = 'block';
+            const blob = URL.createObjectURL(image.files[0]);
+            imgPreview.src = blob
+
+        }
     </script>
 @endsection
